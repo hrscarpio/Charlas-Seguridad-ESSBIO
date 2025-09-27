@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>ESSBIO · Charla UV</title>
+<meta name="theme-color" content="#0f172a">
+<style>
+  :root{ --bg:#0b1226; --panel:#0f172a; --card:#141c2e; --text:#e6edf3; --muted:#9fb0c3; --brand:#22d3ee; --accent:#a78bfa; }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial; background: var(--bg); color: var(--text); line-height:1.5;}
+  header.appbar{position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:.6rem; padding: .6rem .8rem; background: rgba(10,16,28,.9); backdrop-filter: blur(8px); border-bottom:1px solid rgba(148,163,184,.18);}
+  .logo{height:22px; width:auto; object-fit:contain}
+  .title{font-weight:700; font-size:1rem}
+  .chips{margin-left:auto; display:flex; align-items:center; gap:.4rem}
+  .chip{border:1px solid rgba(148,163,184,.3); padding:.25rem .5rem; border-radius:999px; color:var(--muted); font-size:.78rem}
+  .container{padding:14px; max-width:920px; margin:0 auto}
+  .card{border:1px solid rgba(148,163,184,.18); border-radius:14px; background:var(--card); padding:14px}
+  h1{font-size:1.4rem; margin:.3rem 0 .8rem}
+  h2{font-size:1.2rem; margin:.2rem 0 .6rem}
+  p.lead{color:#c8d3e0}
+  ul{padding-left:1.1rem; margin:.3rem 0}
+  li{margin:.3rem 0}
+
+  .deck{border:1px solid rgba(148,163,184,.18); border-radius:16px; overflow:hidden; background:var(--panel)}
+  input[name="slide"]{position:absolute; left:-9999px}
+  .slides section{display:none; padding:18px; min-height:56vh}
+  #s1r:checked ~ .slides [data-for="s1r"],
+  #s2r:checked ~ .slides [data-for="s2r"],
+  #s3r:checked ~ .slides [data-for="s3r"],
+  #s4r:checked ~ .slides [data-for="s4r"],
+  #s5r:checked ~ .slides [data-for="s5r"],
+  #s6r:checked ~ .slides [data-for="s6r"],
+  #s7r:checked ~ .slides [data-for="s7r"],
+  #s8r:checked ~ .slides [data-for="s8r"],
+  #s9r:checked ~ .slides [data-for="s9r"]{display:block; animation:fade .2s ease}
+  @keyframes fade{from{opacity:.6; transform:translateY(3px)} to{opacity:1; transform:none}}
+  .progress{height:6px; width:100%; background:rgba(148,163,184,.16)}
+  .progress>div{height:100%; width:var(--pct, 11%); background:linear-gradient(90deg, var(--brand), var(--accent)); transition:width .2s}
+
+  .nav{display:flex; justify-content:space-between; align-items:center; gap:8px; padding:10px; border-top:1px solid rgba(148,163,184,.18); background:rgba(10,16,28,.85)}
+  .nav label{display:flex; align-items:center; justify-content:center; min-height:44px; padding:.6rem .9rem; border-radius:12px; border:1px solid rgba(148,163,184,.35); background:#0d162a; color:var(--text); font-size:1rem; cursor:pointer}
+  .pill{border:1px solid rgba(148,163,184,.28); padding:.25rem .6rem; border-radius:999px; color:var(--muted); font-size:.9rem}
+
+  .uv-scale{display:grid; grid-template-columns: repeat(10, 1fr); gap:4px; margin-top:8px}
+  .uv-box{height:18px; border-radius:4px}
+  .uv-1{background:#A3E635} .uv-2{background:#84CC16} .uv-3{background:#22C55E} .uv-4{background:#F59E0B}
+  .uv-5{background:#EF4444} .uv-6{background:#DC2626} .uv-7{background:#991B1B} .uv-8{background:#7C2D12}
+  .uv-9{background:#6D28D9} .uv-10{background:#4C1D95}
+  input[type="range"]{width:100%}
+  .uv-table{width:100%; border-collapse:collapse; font-size:.95rem}
+  .uv-table th,.uv-table td{border:1px solid rgba(148,163,184,.25); padding:8px}
+  .uv-table th{background:rgba(148,163,184,.12); text-align:left}
+
+  .uvcat{margin-top:10px}
+  .seg{display:grid; grid-template-columns: repeat(5,1fr); gap:6px}
+  .seg input{position:absolute; left:-9999px}
+  .seg label{display:block; text-align:center; padding:.55rem .3rem; border:1px solid rgba(148,163,184,.35); border-radius:12px; cursor:pointer; font-size:.9rem; background:#0d162a; color:var(--text)}
+  .seg label.active{outline:2px solid var(--brand); outline-offset:2px}
+  #uvc1:checked ~ .uvcat-output .o1,
+  #uvc2:checked ~ .uvcat-output .o2,
+  #uvc3:checked ~ .uvcat-output .o3,
+  #uvc4:checked ~ .uvcat-output .o4,
+  #uvc5:checked ~ .uvcat-output .o5{display:block}
+  .uvcat-output p{display:none; margin:.5rem 0 0}
+  .seg input:checked + label{border-color:var(--brand)}
+
+  @media(min-width:700px){h1{font-size:1.8rem} h2{font-size:1.4rem} .slides section{padding:24px}}
+  @media print{header.appbar,.nav{display:none!important} body{background:#fff; color:#111827} .deck{border:none} .slides section{display:block; page-break-after:always}}
+</style>
+</head>
+<body>
+<header class="appbar">
+  <img src="essbio_logo.png" alt="ESSBIO" class="logo" onerror="this.style.display='none'">
+  <div class="title">Charla UV · ESSBIO</div>
+  <div class="chips">
+    <span id="clock" class="chip">--:--</span>
+    <span id="timer" class="chip">00:00</span>
+  </div>
+</header>
+
+<main class="container">
+  <div class="deck">
+    <input type="radio" name="slide" id="s1r" checked>
+    <input type="radio" name="slide" id="s2r">
+    <input type="radio" name="slide" id="s3r">
+    <input type="radio" name="slide" id="s4r">
+    <input type="radio" name="slide" id="s5r">
+    <input type="radio" name="slide" id="s6r">
+    <input type="radio" name="slide" id="s7r">
+    <input type="radio" name="slide" id="s8r">
+    <input type="radio" name="slide" id="s9r">
+
+    <div class="progress"><div id="prog" style="--pct:11%"></div></div>
+
+    <div class="slides">
+      <section data-for="s1r">
+        <h1>Exposición a Radiación Solar y Protección UV</h1>
+        <p class="lead">Charla breve y práctica para operadores y analistas. <span class="pill">15–20 min</span></p>
+        <div class="card">
+          <strong>Cómo usar</strong>
+          <ul>
+            <li>Usa <em>Anterior</em> y <em>Siguiente</em> al pie.</li>
+            <li>Toca el tiempo (arriba) para iniciar/pausar el temporizador.</li>
+          </ul>
+        </div>
+        <div class="nav">
+          <span class="pill">1 / 9 · Portada</span>
+          <label for="s2r">Siguiente ▶</label>
+        </div>
+      </section>
+
+      <section data-for="s2r">
+        <h2>1) Introducción</h2>
+        <p class="lead"><em>“La radiación solar está presente todos los días; sus efectos se acumulan.”</em></p>
+        <ul>
+          <li>Objetivo: reconocer riesgos y aplicar medidas efectivas.</li>
+          <li>Pregunta: ¿Quién terminó con piel roja o dolor de cabeza por el sol?</li>
+        </ul>
+        <div class="nav">
+          <label for="s1r">◀ Anterior</label>
+          <span class="pill">2 / 9 · Introducción</span>
+          <label for="s3r">Siguiente ▶</label>
+        </div>
+      </section>
+
+      <section data-for="s3r">
+        <h2>2) ¿Qué es la radiación UV?</h2>
+        <ul>
+          <li>Llega incluso en días nublados.</li>
+          <li><strong>UVB</strong>: quemaduras y mayor riesgo de cáncer de piel.</li>
+          <li><strong>UVA</strong>: envejecimiento prematuro y daño ocular.</li>
+          <li>Afecta piel y ojos.</li>
+        </ul>
+        <div class="card">
+          <label for="uvInput">Simulador manual de Índice UV</label>
+          <input id="uvInput" type="range" min="1" max="11" value="7">
+          <div class="pill">Índice UV: <strong id="uvVal">7</strong></div>
+          <div class="pill">Recomendación: <strong id="uvAdvice">Alto · Extremar medidas</strong></div>
+          <div class="uv-scale" aria-hidden="true">
+            <div class="uv-box uv-1"></div><div class="uv-box uv-2"></div><div class="uv-box uv-3"></div><div class="uv-box uv-4"></div><div class="uv-box uv-5"></div>
+            <div class="uv-box uv-6"></div><div class="uv-box uv-7"></div><div class="uv-box uv-8"></div><div class="uv-box uv-9"></div><div class="uv-box uv-10"></div>
+          </div>
+          <div class="uvcat" id="uvCatBlock">
+            <div class="seg">
+              <input type="radio" name="uvcat" id="uvc1">
+              <label for="uvc1" id="lbl1">1–2 Bajo</label>
+              <input type="radio" name="uvcat" id="uvc2">
+              <label for="uvc2" id="lbl2">3–5 Moderado</label>
+              <input type="radio" name="uvcat" id="uvc3" checked>
+              <label for="uvc3" id="lbl3">6–7 Alto</label>
+              <input type="radio" name="uvcat" id="uvc4">
+              <label for="uvc4" id="lbl4">8–10 Muy alto</label>
+              <input type="radio" name="uvcat" id="uvc5">
+              <label for="uvc5" id="lbl5">11+ Extremo</label>
+            </div>
+            <div class="uvcat-output">
+              <p class="o1">Bajo · Básico — Gafas si hay reflejos. Bloqueador opcional.</p>
+              <p class="o2">Moderado — Casco con protector de nuca, gafas UV y FPS ≥ 30.</p>
+              <p class="o3">Alto — Limitar 11–15h; manga larga; reaplicar bloqueador cada 2–3 h.</p>
+              <p class="o4">Muy alto — Sombra siempre; EPP completo.</p>
+              <p class="o5">Extremo — Evitar exposición; reprogramar tareas.</p>
+            </div>
+          </div>
+          <p class="pill" id="uvNoJs">Si el control superior no cambia, usa el selector por categorías (arriba) o la tabla UV (diapositiva 7).</p>
+        </div>
+        <div class="nav">
+          <label for="s2r">◀ Anterior</label>
+          <span class="pill">3 / 9 · Radiación UV</span>
+          <label for="s4r">Siguiente ▶</label>
+        </div>
+      </section>
+
+      <section data-for="s4r">
+        <h2>3) Riesgos principales en la planta</h2>
+        <ul>
+          <li><strong>Operadores:</strong> áreas sin sombra; 11:00–15:00 crítico.</li>
+          <li><strong>Analistas:</strong> salidas y traslados frecuentes.</li>
+          <li><strong>Efectos:</strong> insolación, cefalea; a largo plazo cáncer de piel/cataratas.</li>
+        </ul>
+        <div class="nav">
+          <label for="s3r">◀ Anterior</label>
+          <span class="pill">4 / 9 · Riesgos</span>
+          <label for="s5r">Siguiente ▶</label>
+        </div>
+      </section>
+
+      <section data-for="s5r">
+        <h2>4) Factores que aumentan el riesgo aquí</h2>
+        <ul>
+          <li>Sin sombra natural → radiación directa.</li>
+          <li>Reflexión en concreto y agua.</li>
+          <li>Jornadas prolongadas al sol.</li>
+          <li>EPP incompleto (sin protector de nuca o lentes UV).</li>
+        </ul>
+        <div class="nav">
+          <label for="s4r">◀ Anterior</label>
+          <span class="pill">5 / 9 · Factores locales</span>
+          <label for="s6r">Siguiente ▶</label>
+        </div>
+      </section>
+
+      <section data-for="s6r">
+        <h2>5) Medidas preventivas: Operadores</h2>
+        <ul>
+          <li><strong>EPP:</strong> casco con protector de nuca, lentes UV, manga larga.</li>
+          <li><strong>FPS ≥ 30</strong>, reaplicar cada 2–3 h.</li>
+          <li><strong>Organización:</strong> priorizar tareas bajo techo 11–15h.</li>
+          <li><strong>Hidratación:</strong> cada 30–40 min.</li>
+          <li><strong>Colectivo:</strong> toldos/techos provisorios.</li>
+        </ul>
+        <div class="nav">
+          <label for="s5r">◀ Anterior</label>
+          <span class="pill">6 / 9 · Medidas Operadores</span>
+          <label for="s7r">Siguiente ▶</label>
+        </div>
+      </section>
+
+      <section data-for="s7r">
+        <h2>5) Medidas preventivas: Analistas</h2>
+        <ul>
+          <li>Bloqueador antes de salir a muestrear.</li>
+          <li>Traslados con casco, lentes UV y manga larga.</li>
+          <li>Evitar pausas largas al aire libre sin protección.</li>
+        </ul>
+        <div class="nav">
+          <label for="s6r">◀ Anterior</label>
+          <span class="pill">7 / 9 · Medidas Analistas</span>
+          <label for="s8r">Siguiente ▶</label>
+        </div>
+      </section>
+
+      <section data-for="s8r">
+        <h2>6) Recomendaciones prácticas</h2>
+        <ul>
+          <li>Revisar el índice UV diario.</li>
+          <li>Si UV ≥ 6: extremar medidas, reducir exposición.</li>
+          <li>Reportar mareo, enrojecimiento o fatiga.</li>
+        </ul>
+        <div class="card">
+          <strong>Checklist rápido</strong>
+          <ul>
+            <li>FPS ≥ 30 aplicado</li>
+            <li>Lentes con filtro UV</li>
+            <li>Casco con protector de nuca</li>
+            <li>Manga larga transpirable</li>
+            <li>Botella de agua llena</li>
+          </ul>
+        </div>
+        <div class="nav">
+          <label for="s7r">◀ Anterior</label>
+          <span class="pill">8 / 9 · Recomendaciones</span>
+          <label for="s9r">Siguiente ▶</label>
+        </div>
+      </section>
+
+      <section data-for="s9r">
+        <h2>7) Tabla de Índice UV</h2>
+        <table class="uv-table">
+          <thead><tr><th>Índice UV</th><th>Categoría</th><th>Color</th><th>Protección</th></tr></thead>
+          <tbody>
+            <tr><td>1–2</td><td>Bajo</td><td>Verde</td><td>Básico; gafas si hay reflejos.</td></tr>
+            <tr><td>3–5</td><td>Moderado</td><td>Amarillo</td><td>Casco con protector de nuca; gafas UV; FPS ≥ 30.</td></tr>
+            <tr><td>6–7</td><td>Alto</td><td>Naranja/Rojo</td><td>Limitar 11–15h; manga larga; reaplicar bloqueador.</td></tr>
+            <tr><td>8–10</td><td>Muy alto</td><td>Violeta</td><td>Sombra siempre; EPP completo.</td></tr>
+            <tr><td>11+</td><td>Extremo</td><td>Violeta oscuro</td><td>Evitar exposición; reprogramar tareas.</td></tr>
+          </tbody>
+        </table>
+        <div class="nav">
+          <label for="s8r">◀ Anterior</label>
+          <span class="pill">9 / 9 · Tabla UV</span>
+          <label for="s1r">Ir a portada ⟳</label>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<script>
+(function(){
+  // Reloj
+  const clock = document.getElementById('clock');
+  if(clock){ setInterval(()=>{ const d=new Date(); clock.textContent=d.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'}); }, 1000); }
+  // Temporizador
+  const timer = document.getElementById('timer');
+  if(timer){
+    let running=false, t0=0, acc=0, raf;
+    function tick(){
+      const s = acc + (performance.now()-t0)/1000;
+      const m = String(Math.floor(s/60)).padStart(2,'0');
+      const ss = String(Math.floor(s%60)).padStart(2,'0');
+      timer.textContent = m+':'+ss;
+      raf = requestAnimationFrame(tick);
+    }
+    timer.addEventListener('click', ()=>{
+      if(!running){ running=true; t0=performance.now(); raf=requestAnimationFrame(tick); }
+      else{ running=false; acc += (performance.now()-t0)/1000; cancelAnimationFrame(raf); }
+    });
+  }
+  // Progreso
+  const prog = document.getElementById('prog');
+  const radios = Array.from(document.querySelectorAll('input[name="slide"]'));
+  function updateProg(){
+    const idx = radios.findIndex(r=> r.checked);
+    if(idx>=0 && prog) prog.style.setProperty('--pct', Math.round(((idx+1)/radios.length)*100)+'%');
+  }
+  radios.forEach(r=> r.addEventListener('change', updateProg));
+  updateProg();
+
+  // UV: sincroniza slider, valor, recomendación y categoría
+  const slider = document.getElementById('uvInput');
+  const uvVal = document.getElementById('uvVal');
+  const adv = document.getElementById('uvAdvice');
+  const uvc = [document.getElementById('uvc1'), document.getElementById('uvc2'), document.getElementById('uvc3'), document.getElementById('uvc4'), document.getElementById('uvc5')];
+  const lbl = [document.getElementById('lbl1'), document.getElementById('lbl2'), document.getElementById('lbl3'), document.getElementById('lbl4'), document.getElementById('lbl5')];
+  const noJs = document.getElementById('uvNoJs');
+  const uvCatBlock = document.getElementById('uvCatBlock');
+
+  function catFrom(v){ if(v<=2) return 0; if(v<=5) return 1; if(v<=7) return 2; if(v<=10) return 3; return 4; }
+  function adviceFrom(v){
+    if(v<=2) return 'Bajo · Básico';
+    if(v<=5) return 'Moderado · Proteger';
+    if(v<=7) return 'Alto · Extremar medidas';
+    if(v<=10) return 'Muy alto · Evitar 11–15h';
+    return 'Extremo · Evitar exposición';
+  }
+  function syncAll(v){
+    const val = parseInt(v,10);
+    if(uvVal) uvVal.textContent = isNaN(val)? '—' : String(val);
+    if(adv) adv.textContent = adviceFrom(val);
+    const c = catFrom(val);
+    // Marca la categoría correcta y resalta etiqueta activa
+    uvc.forEach((r,idx)=>{ if(r) r.checked = (idx===c); });
+    lbl.forEach((L,idx)=>{ if(L) L.classList.toggle('active', idx===c); });
+  }
+
+  if(slider){
+    // JS activo: oculto el aviso, dejo visible el bloque de categorías pero sincronizado
+    if(noJs) noJs.style.display='none';
+    if(uvCatBlock) uvCatBlock.style.display='block';
+    syncAll(slider.value);
+    slider.addEventListener('input', e=> syncAll(e.target.value));
+    slider.addEventListener('change', e=> syncAll(e.target.value));
+    // Si el usuario toca una categoría, muevo la barra al valor representativo
+    const mapping = [2,5,7,10,11];
+    uvc.forEach((r,idx)=> r && r.addEventListener('change', ()=>{
+      slider.value = mapping[idx];
+      syncAll(slider.value);
+    }));
+  } else {
+    // Sin JS o sin slider
+    if(uvCatBlock) uvCatBlock.style.display='block';
+    if(noJs) noJs.style.display='block';
+  }
+})();
+</script>
+</body>
+</html>
