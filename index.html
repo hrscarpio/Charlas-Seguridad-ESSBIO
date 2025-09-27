@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Charla UV · ESSBIO (híbrida)</title>
+<meta name="theme-color" content="#0f172a">
+<style>
+  :root{ --bg:#0b1226; --panel:#0f172a; --card:#141c2e; --text:#e6edf3; --muted:#9fb0c3; --brand:#1fb6ff; --accent:#a78bfa }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:var(--bg);color:var(--text);line-height:1.5}
+  header{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:.6rem;padding:.6rem .8rem;background:rgba(10,16,28,.9);backdrop-filter:blur(8px);border-bottom:1px solid rgba(148,163,184,.18)}
+  .title{font-weight:700}
+  .logo-wrap{display:flex;align-items:center;gap:.5rem}
+  .logo-fallback{display:inline-block;font-weight:800;letter-spacing:.5px;color:#0ea5e9}
+  main{max-width:920px;margin:0 auto;padding:14px}
+  .deck{border:1px solid rgba(148,163,184,.18);border-radius:16px;overflow:hidden;background:var(--panel)}
+  /* Navegación por radios (sin JS) */
+  input[name="slide"]{position:absolute;left:-9999px}
+  .slides section{display:none;padding:18px;min-height:56vh}
+  #s1:checked ~ .slides [data-for="s1"],
+  #s2:checked ~ .slides [data-for="s2"],
+  #s3:checked ~ .slides [data-for="s3"],
+  #s4:checked ~ .slides [data-for="s4"],
+  #s5:checked ~ .slides [data-for="s5"],
+  #s6:checked ~ .slides [data-for="s6"],
+  #s7:checked ~ .slides [data-for="s7"],
+  #s8:checked ~ .slides [data-for="s8"],
+  #s9:checked ~ .slides [data-for="s9"]{display:block}
+  .nav{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px;border-top:1px solid rgba(148,163,184,.18);background:rgba(10,16,28,.85)}
+  .nav label{display:flex;align-items:center;justify-content:center;min-height:44px;padding:.6rem .9rem;border-radius:12px;border:1px solid rgba(148,163,184,.35);background:#0d162a;color:var(--text);font-size:1rem;cursor:pointer}
+  .pill{border:1px solid rgba(148,163,184,.28);padding:.25rem .6rem;border-radius:999px;color:var(--muted);font-size:.9rem}
+  .card{border:1px solid rgba(148,163,184,.18);border-radius:14px;background:var(--card);padding:14px}
+  h1{font-size:1.4rem;margin:.3rem 0 .8rem} h2{font-size:1.2rem;margin:.2rem 0 .6rem}
+  /* Segmentos sin JS */
+  .uvcat{margin-top:10px}
+  .seg{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+  .seg input{position:absolute;left:-9999px}
+  .seg label{display:block;text-align:center;padding:.55rem .3rem;border:1px solid rgba(148,163,184,.35);border-radius:12px;background:#0d162a;color:var(--text);cursor:pointer;font-size:.9rem}
+  .seg input:checked + label{outline:2px solid var(--brand);outline-offset:2px;border-color:var(--brand)}
+  .uvcat-output p{display:none;margin:.5rem 0 0}
+  #c1:checked ~ .uvcat-output .o1,
+  #c2:checked ~ .uvcat-output .o2,
+  #c3:checked ~ .uvcat-output .o3,
+  #c4:checked ~ .uvcat-output .o4,
+  #c5:checked ~ .uvcat-output .o5{display:block}
+  /* Slider solo si hay JS */
+  .js-only{display:none}
+  .banner-noscript{margin:.6rem 0 0;background:#271a1a;color:#fca5a5;border:1px solid #7f1d1d;border-radius:10px;padding:.6rem .75rem;font-size:.85rem}
+  .uv-table{width:100%;border-collapse:collapse;font-size:.95rem}
+  .uv-table th,.uv-table td{border:1px solid rgba(148,163,184,.25);padding:8px}
+  .uv-table th{background:rgba(148,163,184,.12);text-align:left}
+  @media(min-width:700px){h1{font-size:1.8rem}h2{font-size:1.4rem}.slides section{padding:24px}}
+  @media print{header,.nav{display:none!important} body{background:#fff;color:#111827} .deck{border:none} .slides section{display:block;page-break-after:always}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-wrap">
+    <!-- Intentará cargar essbio_logo.png (si lo subes a la raíz). Si falla, muestra texto ESSBIO. -->
+    <img id="logo" src="essbio_logo.png" alt="ESSBIO" style="height:22px;display:none">
+    <span id="logoFallback" class="logo-fallback">ESSBIO</span>
+  </div>
+  <div class="title">· Charla UV</div>
+  <div style="margin-left:auto" class="pill" id="clock">--:--</div>
+</header>
+
+<main>
+  <div class="deck">
+    <!-- Navegación por radio (funciona sin JS) -->
+    <input type="radio" name="slide" id="s1" checked>
+    <input type="radio" name="slide" id="s2">
+    <input type="radio" name="slide" id="s3">
+    <input type="radio" name="slide" id="s4">
+    <input type="radio" name="slide" id="s5">
+    <input type="radio" name="slide" id="s6">
+    <input type="radio" name="slide" id="s7">
+    <input type="radio" name="slide" id="s8">
+    <input type="radio" name="slide" id="s9">
+
+    <div class="slides">
+      <section data-for="s1">
+        <h1>Exposición a Radiación Solar y Protección UV</h1>
+        <p class="pill">Duración 15–20 min · Operadores de Planta y Analistas de Laboratorio</p>
+        <div class="card">
+          <strong>Modo híbrido</strong>
+          <ul>
+            <li>Si el navegador permite JavaScript verás un <em>slider</em> totalmente sincronizado.</li>
+            <li>Si no, usa los <em>botones de categoría</em> (funcionan sin JS).</li>
+          </ul>
+        </div>
+        <div class="nav">
+          <span class="pill">1 / 9 · Portada</span>
+          <label for="s2">Siguiente ▶</label>
+        </div>
+      </section>
+
+      <section data-for="s2">
+        <h2>1) Introducción</h2>
+        <ul>
+          <li>“La radiación solar está presente todos los días; sus efectos se acumulan.”</li>
+          <li>Objetivo: reconocer riesgos y aplicar medidas efectivas.</li>
+          <li>¿Quién terminó con piel roja o dolor de cabeza por el sol?</li>
+        </ul>
+        <div class="nav">
+          <label for="s1">◀ Anterior</label>
+          <span class="pill">2 / 9 · Introducción</span>
+          <label for="s3">Siguiente ▶</label>
+        </div>
+      </section>
+
+      <section data-for="s3">
+        <h2>2) ¿Qué es la radiación UV?</h2>
+        <ul>
+          <li>Llega incluso en días nublados.</li>
+          <li><strong>UVB</strong>: quemaduras y mayor riesgo de cáncer de piel.</li>
+          <li><strong>UVA</strong>: envejecimiento prematuro y daño ocular.</li>
+          <li>Afecta piel y ojos.</li>
+        </ul>
+
+        <div class="card">
+          <div id="noJs" class="banner-noscript">Para usar el <strong>slider</strong>, abre en un navegador completo. En esta vista puedes usar los botones por categoría.</div>
+
+          <!-- Slider (visible solo con JS) -->
+          <div id="withJs" class="js-only" aria-hidden="true">
+            <label for="uv"><strong>Simulador con slider</strong></label>
+            <input id="uv" type="range" min="1" max="11" value="7">
+            <div class="pill">Índice UV: <strong id="uvNum">7</strong></div>
+            <div class="pill">Recomendación: <strong id="uvAdv">Alto · Extremar medidas</strong></div>
+          </div>
+
+          <!-- Botones por categoría (funciona sin JS) -->
+          <div class="uvcat">
+            <div class="seg">
+              <input type="radio" name="uvc" id="c1" checked><label for="c1">1–2 Bajo</label>
+              <input type="radio" name="uvc" id="c2"><label for="c2">3–5 Moderado</label>
+              <input type="radio" name="uvc" id="c3"><label for="c3">6–7 Alto</label>
+              <input type="radio" name="uvc" id="c4"><label for="c4">8–10 Muy alto</label>
+              <input type="radio" name="uvc" id="c5"><label for="c5">11+ Extremo</label>
+            </div>
+            <div class="uvcat-output">
+              <p class="o1"><strong>Índice:</strong> 2 · <strong>Recomendación:</strong> Bajo · Básico; gafas si hay reflejos.</p>
+              <p class="o2"><strong>Índice:</strong> 5 · <strong>Recomendación:</strong> Moderado · Proteger (casco con protector de nuca, lentes UV, FPS ≥ 30).</p>
+              <p class="o3"><strong>Índice:</strong> 7 · <strong>Recomendación:</strong> Alto · Extremar medidas (limitar 11–15h; manga larga; reaplicar).</p>
+              <p class="o4"><strong>Índice:</strong> 10 · <strong>Recomendación:</strong> Muy alto · Sombra siempre; EPP completo.</p>
+              <p class="o5"><strong>Índice:</strong> 11 · <strong>Recomendación:</strong> Extremo · Evitar exposición; reprogramar tareas.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav">
+          <label for="s2">◀ Anterior</label>
+          <span class="pill">3 / 9 · Radiación UV</span>
+          <label for="s4">Siguiente ▶</label>
+        </div>
+      </section>
+
+      <section data-for="s4">
+        <h2>3) Riesgos principales en la planta</h2>
+        <ul>
+          <li><strong>Operadores:</strong> áreas sin sombra; 11:00–15:00 crítico.</li>
+          <li><strong>Analistas:</strong> salidas y traslados frecuentes.</li>
+          <li><strong>Efectos:</strong> insolación, cefalea; a largo plazo cáncer de piel/cataratas.</li>
+        </ul>
+        <div class="nav"><label for="s3">◀</label><span class="pill">4 / 9 · Riesgos</span><label for="s5">▶</label></div>
+      </section>
+
+      <section data-for="s5">
+        <h2>4) Factores que aumentan el riesgo aquí</h2>
+        <ul>
+          <li>Sin sombra natural → radiación directa.</li>
+          <li>Reflexión en concreto y agua.</li>
+          <li>Jornadas prolongadas al sol.</li>
+          <li>EPP incompleto (sin protector de nuca o lentes UV).</li>
+        </ul>
+        <div class="nav"><label for="s4">◀</label><span class="pill">5 / 9 · Factores</span><label for="s6">▶</label></div>
+      </section>
+
+      <section data-for="s6">
+        <h2>5) Medidas preventivas: Operadores</h2>
+        <ul>
+          <li><strong>EPP:</strong> casco con protector de nuca, lentes UV, manga larga.</li>
+          <li><strong>FPS ≥ 30</strong>, reaplicar cada 2–3 h.</li>
+          <li><strong>Organización:</strong> priorizar tareas bajo techo 11–15h.</li>
+          <li><strong>Hidratación:</strong> cada 30–40 min.</li>
+          <li><strong>Colectivo:</strong> toldos/techos provisorios.</li>
+        </ul>
+        <div class="nav"><label for="s5">◀</label><span class="pill">6 / 9 · Operadores</span><label for="s7">▶</label></div>
+      </section>
+
+      <section data-for="s7">
+        <h2>5) Medidas preventivas: Analistas</h2>
+        <ul>
+          <li>Bloqueador antes de salir a muestrear.</li>
+          <li>Traslados con casco, lentes UV y manga larga.</li>
+          <li>Evitar pausas largas al aire libre sin protección.</li>
+        </ul>
+        <div class="nav"><label for="s6">◀</label><span class="pill">7 / 9 · Analistas</span><label for="s8">▶</label></div>
+      </section>
+
+      <section data-for="s8">
+        <h2>6) Recomendaciones prácticas</h2>
+        <ul>
+          <li>Revisar el índice UV diario; si UV ≥ 6, extremar medidas.</li>
+          <li>Reportar mareo, enrojecimiento o fatiga.</li>
+        </ul>
+        <div class="card">
+          <strong>Checklist rápido</strong>
+          <ul>
+            <li>FPS ≥ 30 aplicado</li><li>Lentes con filtro UV</li><li>Casco con protector de nuca</li><li>Manga larga</li><li>Botella de agua</li>
+          </ul>
+        </div>
+        <div class="nav"><label for="s7">◀</label><span class="pill">8 / 9 · Recomendaciones</span><label for="s9">▶</label></div>
+      </section>
+
+      <section data-for="s9">
+        <h2>7) Tabla de Índice UV</h2>
+        <table class="uv-table">
+          <thead><tr><th>Índice UV</th><th>Categoría</th><th>Color</th><th>Protección</th></tr></thead>
+          <tbody>
+            <tr><td>1–2</td><td>Bajo</td><td>Verde</td><td>Básico; gafas si hay reflejos.</td></tr>
+            <tr><td>3–5</td><td>Moderado</td><td>Amarillo</td><td>Casco con protector de nuca; gafas UV; FPS ≥ 30.</td></tr>
+            <tr><td>6–7</td><td>Alto</td><td>Naranja/Rojo</td><td>Limitar 11–15h; manga larga; reaplicar bloqueador.</td></tr>
+            <tr><td>8–10</td><td>Muy alto</td><td>Violeta</td><td>Sombra siempre; EPP completo.</td></tr>
+            <tr><td>11+</td><td>Extremo</td><td>Violeta oscuro</td><td>Evitar exposición; reprogramar tareas.</td></tr>
+          </tbody>
+        </table>
+        <div class="nav"><label for="s8">◀</label><span class="pill">9 / 9 · Tabla UV</span><label for="s1">Portada ⟳</label></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<script>
+(function(){
+  // Logo: mostrar imagen si existe; si falla, dejar texto ESSBIO
+  const img=document.getElementById('logo'), fb=document.getElementById('logoFallback');
+  if(img){
+    img.onerror=()=>{img.style.display='none';fb.style.display='inline-block'};
+    img.onload =()=>{img.style.display='inline-block';fb.style.display='none'};
+    img.src=img.getAttribute('src'); // fuerza evento
+  }
+  // Reloj
+  const clock=document.getElementById('clock');
+  if(clock){ setInterval(()=>{ const d=new Date(); clock.textContent=d.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'})},1000); }
+
+  // Habilitar slider + sincronización
+  const noJs=document.getElementById('noJs');
+  const withJs=document.getElementById('withJs');
+  if(withJs){ withJs.style.display='block'; withJs.removeAttribute('aria-hidden'); if(noJs) noJs.style.display='none'; }
+
+  const slider=document.getElementById('uv');
+  const uvNum=document.getElementById('uvNum');
+  const uvAdv=document.getElementById('uvAdv');
+  const radios=[...document.querySelectorAll('input[name="uvc"]')];
+
+  function catFrom(v){ if(v<=2) return 0; if(v<=5) return 1; if(v<=7) return 2; if(v<=10) return 3; return 4; }
+  function adviceFrom(v){
+    if(v<=2) return 'Bajo · Básico';
+    if(v<=5) return 'Moderado · Proteger';
+    if(v<=7) return 'Alto · Extremar medidas';
+    if(v<=10) return 'Muy alto · Evitar 11–15h';
+    return 'Extremo · Evitar exposición';
+  }
+  function syncFromSlider(v){
+    const val=parseInt(v,10);
+    uvNum.textContent=String(val);
+    uvAdv.textContent=adviceFrom(val);
+    const idx=catFrom(val);
+    radios.forEach((r,i)=>r.checked=(i===idx));
+  }
+  function moveSliderToCat(idx){
+    const rep=[2,5,7,10,11][idx];
+    slider.value=rep; syncFromSlider(rep);
+  }
+  if(slider){
+    syncFromSlider(slider.value);
+    slider.addEventListener('input',e=>syncFromSlider(e.target.value));
+    radios.forEach((r,i)=> r.addEventListener('change',()=>moveSliderToCat(i)));
+  }
+})();
+</script>
+</body>
+</html>
